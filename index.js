@@ -49,6 +49,8 @@ async function run() {
     const TouristPlaceInfo = client
       .db('touristMenia')
       .collection('touristPlaceInfo')
+    //Faq
+    const FaqInfo = client.db('touristMenia').collection('faq')
 
     /* Tourist Place Information
         get: /allTouristPlace
@@ -56,6 +58,7 @@ async function run() {
         getById: /allTouristPlace/:id
         update: /allTouristPlace/:id
         delete: /deleteTouristInfo/:id
+        faq: /faq
     */
     // add touristplace
     app.post('/addTouristPlace', async (req, res) => {
@@ -110,9 +113,14 @@ async function run() {
     /* Tourist Information
         get: /allTourists
         post: /addTourist
+        post: /contactUs
     */
     // add tourist
     app.post('/addTourist', async (req, res) => {
+      const result = await TouristCollection.insertOne(req.body)
+      res.json(result)
+    })
+    app.post('/contactUs', async (req, res) => {
       const result = await TouristCollection.insertOne(req.body)
       res.json(result)
     })
@@ -191,6 +199,18 @@ async function run() {
       )
       res.json(result)
     })
+    /* Faq
+        get: /faq
+
+    */
+
+    // GET faq
+    app.get('/faq', async (req, res) => {
+      const cursor = FaqInfo.find({})
+      const faq = await cursor.toArray()
+      res.json(faq)
+    })
+   
   } finally {
     // await client.close();
   }
