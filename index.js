@@ -51,6 +51,8 @@ async function run() {
       .collection('touristPlaceInfo')
     //Faq
     const FaqInfo = client.db('touristMenia').collection('faq')
+    //Gallery
+    const Gallery = client.db('touristMenia').collection('ImageCollection')
 
     /* Tourist Place Information
         get: /allTouristPlace
@@ -203,14 +205,29 @@ async function run() {
         get: /faq
 
     */
-
     // GET faq
     app.get('/faq', async (req, res) => {
       const cursor = FaqInfo.find({})
       const faq = await cursor.toArray()
       res.json(faq)
     })
-   
+    /* Faq
+        get: /gallery
+        post: /gallery
+
+    */
+    // GET faq
+    app.get('/gallery', async (req, res) => {
+      const cursor = Gallery.find({})
+      const gallery = await cursor.toArray()
+      res.json(gallery)
+    })
+
+    // POST gallery
+    app.post('/gallery', async (req, res) => {
+      const result = await Gallery.insertOne(req.body)
+      res.json(result)
+    })
   } finally {
     // await client.close();
   }
