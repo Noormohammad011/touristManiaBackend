@@ -1,8 +1,8 @@
-import express from 'express'
-import dotenv from 'dotenv'
-import colors from 'colors'
-import { MongoClient } from 'mongodb'
-import cors from 'cors'
+const express = require('express')
+const bodyParser = require('body-parser')
+const cors = require('cors')
+require('dotenv').config()
+const MongoClient = require('mongodb').MongoClient
 const ObjectId = require('mongodb').ObjectId
 
 //initialization
@@ -11,11 +11,25 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
-//env config
-dotenv.config()
 
 //monogdb Connection
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@noyonecommerce.qnayd.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
+
+app.get('/', (req, res) => {
+  res.send('Running my CRUD Server')
+})
+
+const PORT = process.env.PORT || 5000
+
+app.listen(
+  PORT,
+  console.log(
+    `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`
+  )
+)
+
+
+
 
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
@@ -184,15 +198,3 @@ async function run() {
 
 run().catch(console.dir)
 
-app.get('/', (req, res) => {
-  res.send('Running my CRUD Server')
-})
-
-const PORT = process.env.PORT || 5000
-
-app.listen(
-  PORT,
-  console.log(
-    `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.cyan.bold
-  )
-)
